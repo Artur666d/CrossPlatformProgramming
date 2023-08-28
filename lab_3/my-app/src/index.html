@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="box">
+      <span class="label"> CPU %  </span>
+      <span id="cpu"> - </span>
+      </div>
+      <div class="box">
+      <span class="label">Свободная память (%) </span>
+      <span id="mem"> - </span>
+      </div>
+      <div class="box">
+      <span class="label">Всего оперативки (GB) </span>
+      <span id="total-mem"> - </span>
+      <div class="box">
+        <span class="label">Платформа </span>
+        <span id="platform"> - </span>
+      </div>      
+  </body>
+  <script>
+    const electron = require("electron");
+    const ipcRenderer = electron.ipcRenderer;
+    ipcRenderer.on("cpu", (event, data) => {
+      document.getElementById("cpu").innerHTML = parseFloat(data).toFixed(2);
+    });
+    ipcRenderer.on("mem", (event, data) => {
+      document.getElementById("mem").innerHTML = parseFloat(data).toFixed(2);
+    });
+    ipcRenderer.on("total-mem", (event, data) => {
+      document.getElementById("total-mem").innerHTML = Math.round(data);
+    });
+    ipcRenderer.on("platform", (event, data) => {
+      if (data == "win32") 
+        document.getElementById("platform").innerHTML = "Windows";
+      else if (data == "linux")
+        document.getElementById("platform").innerHTML = "Linux";
+      else 
+        document.getElementById("platform").innerHTML = "Unknown";
+    });
+</script>
+</html>
